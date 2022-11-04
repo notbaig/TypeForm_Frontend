@@ -9,7 +9,6 @@ class AppProvider extends React.Component {
         isAuth: false,
         login: (user) => loginActionReducer(this, user),
         logout: () => logoutActionReducer(this),
-
     }//end state
 
     componentDidMount() {
@@ -18,7 +17,7 @@ class AppProvider extends React.Component {
             this.setState({ isAuth: true, user: JSON.parse(user) });
         }
         else {
-            this.setState({ isAuth: false });
+            this.setState({ isAuth: false, user: null });
         }
     }
     render() {
@@ -31,6 +30,6 @@ class AppProvider extends React.Component {
 
 }//end class
 
-const AppConsumer = AppContext.Consumer
+const AppConsumer = AppContext.Consumer;
 
 export { AppProvider, AppConsumer }
