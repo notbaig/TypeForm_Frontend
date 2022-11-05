@@ -24,18 +24,22 @@ const routes = [
         name: 'Create a new Form',
         path: 'create-form'
     },
+    // {
+    //     name: 'Your Forms',
+    //     path: 'your-forms'
+    // },
+    // {
+    //     name: 'History',
+    //     path: 'history'
+    // },
+    // {
+    //     name: 'Billing',
+    //     path: 'billing'
+    // },
     {
-        name: 'Your Forms',
-        path: 'your-forms'
+        name: 'Profile',
+        path: 'profile'
     },
-    {
-        name: 'History',
-        path: 'history'
-    },
-    {
-        name: 'Billing',
-        path: 'billing'
-    }
 ];
 
 class NavBar extends React.Component {
@@ -63,7 +67,7 @@ class NavBar extends React.Component {
         //const { user } = this.context;
         const { anchorElNav, anchorElUser } = this.state;
 
-        if (this.props.history.location.pathname === '/') return null;
+        if (this.props.history.location.pathname === '/' || this.props.history.location.pathname === '/signup') return null;
 
         return (
             <AppBar position="static" >

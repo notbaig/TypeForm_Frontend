@@ -9,7 +9,10 @@ import {
     CssBaseline,
     LinearProgress
 } from '@mui/material';
+import axios from 'axios';
+import { IP } from '../constants/Globals';
 import { AppConsumer } from '../context/AppContext';
+import { withRouter } from 'react-router-dom';
 
 class Login extends React.Component {
     static contextType = AppConsumer;
@@ -18,15 +21,31 @@ class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            email: 'baig@gmail.com',
-            password: 'abc123',
-            loading: true
+            // email: 'baigmustafa47@gmail.com',
+            // password: 'abc12345',
+            loading: false
         }
     }//end constructor
 
-    login = () => {
+    login = async () => {
         const { email, password } = this.state;
-        this.context.login({ email, password });
+        if (email === '' || password === '') {
+            return;
+        }
+        this.setState({ loading: true });
+        const link = `${IP}/auth/login`;
+        try {
+            const response = await axios.post(link, { email, password });
+            const { data } = response;
+            console.log('res -> ', data);
+            this.setState({ loading: false });
+            this.context.login(data);
+        }
+        catch (e) {
+            alert(e.response.data);
+            this.setState({ loading: false });
+            console.log('e -> ', e.response.data);
+        }
     }//end
 
     render() {
@@ -78,8 +97,8 @@ class Login extends React.Component {
                 }}
                 >
                     <Typography component="h1" variant="h3">TypeForm</Typography>
-                    <Typography component="h1" variant="h5">Web Dev Course Project</Typography>
-                    <hr/>
+                    {/* <Typography component="h1" variant="h5">Web Dev Course Project</Typography> */}
+                    <hr />
                     <Typography component="h1" variant="h6">Mustafa Baig (17908)</Typography>
                     <Typography component="h1" variant="h6">Ali Murtaza (17933)</Typography>
 
@@ -98,15 +117,12 @@ class Login extends React.Component {
         } = this.state;
         return (
             <Box
-                sx={{ mt: 1 }}
                 noValidate
-            // component="form"
-            // onSubmit={this.handleSubmit}
+                sx={{ mt: 1 }}
             >
-
-                {/* {loading && <Box sx={{ width: '100%' }}>
+                {loading && <Box sx={{ width: '100%' }}>
                     <LinearProgress variant="indeterminate" />
-                </Box>} */}
+                </Box>}
 
                 <TextField
                     margin="normal"
@@ -144,7 +160,19 @@ class Login extends React.Component {
                     size="large"
                     onClick={this.login}
                 >
-                    Login
+                    Log In
+                </Button>
+
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="outlined"
+                    // sx={{ mt: 3, mb: 2 }}
+                    color="primary"
+                    size="large"
+                    onClick={() => this.props.history.push('/signup')}
+                >
+                    Sign Up
                 </Button>
 
             </Box>
@@ -153,4 +181,4 @@ class Login extends React.Component {
 
 }//end class
 
-export default Login;
+export default withRouter(Login);

@@ -5,7 +5,9 @@ import { AppProvider, AppConsumer } from './context/AppContext';
 import NavBar from './components/NavBar';
 
 import Login from '../src/pages/Login';
+import SignUp from '../src/pages/SignUp';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 import CreateForm from './pages/CreateForm';
 
 import { PRIMARY_COLOR, SECONDARY_COLOR } from '../src/constants/Globals';
@@ -59,7 +61,9 @@ export default function App() {
           <NavBar />
           <Switch>
             <PrivateRoute exact path="/create-form" component={CreateForm} />
+            <PrivateRoute exact path="/profile" component={Profile} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PublicRoute exact path="/signup" component={SignUp} />
             <PublicRoute exact path="/" component={Login} />
           </Switch>
         </AppProvider>
