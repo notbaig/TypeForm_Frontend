@@ -20,6 +20,7 @@ class AppProvider extends React.Component {
             this.setState({ isAuth: false, user: null });
         }
     }
+    
     render() {
         return (
             <AppContext.Provider value={this.state}>
