@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import CreateForm from './pages/CreateForm';
 import MyForms from './pages/MyForms';
+import Form from './pages/Form';
 
 import { PRIMARY_COLOR, SECONDARY_COLOR } from '../src/constants/Globals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -54,6 +55,29 @@ function PublicRoute({ component: Component, authed, ...rest }) {
   )
 }//end
 
+// function PublicRoute({ component: Component, authed, ...rest }) {
+//   return (
+//     <AppConsumer>
+//       {({ isAuth }) => (
+//         <Route
+//           {...rest}
+//           render={(props) => {
+//             console.log('RP -> ', props);
+//             return (
+//               props.location.pathname === '/form'
+//                 ? <Redirect to='/form' />
+//                 : isAuth === false
+//                   ? <Component {...props} />
+//                   : <Redirect to='/dashboard' />)
+//           }
+//           }
+//         />
+//       )}
+//     </AppConsumer>
+//   )
+// }//end
+
+
 export default function App() {
   return (
     <Router>
@@ -61,6 +85,7 @@ export default function App() {
         <AppProvider>
           <NavBar />
           <Switch>
+            <Route exact path="/form" component={Form} />
             <PrivateRoute exact path="/my-forms" component={MyForms} />
             <PrivateRoute exact path="/create-form" component={CreateForm} />
             <PrivateRoute exact path="/profile" component={Profile} />

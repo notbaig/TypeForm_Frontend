@@ -68,7 +68,10 @@ class NavBar extends React.Component {
         //const { user } = this.context;
         const { anchorElNav, anchorElUser } = this.state;
 
-        if (this.props.history.location.pathname === '/' || this.props.history.location.pathname === '/signup') return null;
+        if (this.props.history.location.pathname === '/' 
+        || this.props.history.location.pathname === '/signup' 
+        || this.props.history.location.pathname === '/form'
+        ) return null;
 
         return (
             <AppBar position="static" >
