@@ -15,6 +15,7 @@ import AdbIcon from '@mui/icons-material/Book';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { withRouter } from 'react-router-dom';
+import { blueGrey } from '@mui/material/colors';
 import { AppConsumer } from '../context/AppContext';
 
 const pages = ['Create a new Form', 'Your Forms', 'History', 'Billing'];
@@ -37,10 +38,10 @@ const routes = [
     //     name: 'Billing',
     //     path: 'billing'
     // },
-    {
-        name: 'Profile',
-        path: 'profile'
-    },
+    // {
+    //     name: 'Profile',
+    //     path: 'profile'
+    // },
 ];
 
 class NavBar extends React.Component {
@@ -68,9 +69,9 @@ class NavBar extends React.Component {
         //const { user } = this.context;
         const { anchorElNav, anchorElUser } = this.state;
 
-        if (this.props.history.location.pathname === '/' 
-        || this.props.history.location.pathname === '/signup' 
-        || this.props.history.location.pathname === '/form'
+        if (this.props.history.location.pathname === '/'
+            || this.props.history.location.pathname === '/signup'
+            || this.props.history.location.pathname === '/form'
         ) return null;
 
         return (
@@ -152,20 +153,25 @@ class NavBar extends React.Component {
                             TypeForm
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            {routes.map((route) => (
-                                <Button
-                                    key={route.name}
-                                    onClick={() => this.props.history.push(route.path)}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
-                                >
-                                    {route.name}
-                                </Button>
-                            ))}
+                            {routes.map((route) => {
+                                return (
+                                    <Button
+                                        key={route.name}
+                                        onClick={() => this.props.history.push(route.path)}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                        style={{ textTransform: 'none'}}
+                                        variant={`/${route.path}` === this.props.history.location.pathname ? 'outlined' : 'text'}
+                                        color="secondary"
+                                    >
+                                        {route.name}
+                                    </Button>
+                                )
+                            })}
                         </Box>
 
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Profile">
-                                <IconButton onClick={this.handleOpenUserMenu} sx={{ p: 0 }} style={{ marginRight: 16 }}>
+                                <IconButton onClick={() => this.props.history.push('/profile')} sx={{ p: 0 }} style={{ marginRight: 16 }}>
                                     <PersonIcon style={{ color: '#fff' }} />
                                 </IconButton>
                             </Tooltip>

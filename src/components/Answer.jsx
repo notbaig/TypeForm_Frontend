@@ -24,7 +24,8 @@ const Answer = ({ data, lastIndex, onEvent }) => {
                     <TextField
                         variant="outlined"
                         //label={data.lablel}
-                        placeholder="e.g: What is your favouraite color?"
+                        //placeholder="e.g: What is your favouraite color?"
+                        placeholder={data.lablel}
                         fullWidth={true}
                         //autoFocus={true}
                         style={{ marginBottom: 16 }}

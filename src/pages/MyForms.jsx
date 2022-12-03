@@ -167,12 +167,19 @@ class MyForms extends React.Component {
                                             {`${new Date(createdAt).toDateString()} at ${new Date(createdAt).toTimeString()} `}
                                         </Typography>
 
-                                        <Chip
-                                            label={`Total Submissions: ${totalSubmissions}`}
-                                            style={{
-                                                marginTop: 16
-                                            }}
-                                        />
+                                        <Link
+                                            to={`/form-submissions?id=${_id}`}
+                                            target="_blank"
+                                        >
+                                            <Chip
+                                                label={`Total Submissions: ${totalSubmissions}`}
+                                                style={{
+                                                    marginTop: 16
+                                                }}
+                                            />
+                                        </Link>
+
+                                      
 
                                     </CardContent>
 

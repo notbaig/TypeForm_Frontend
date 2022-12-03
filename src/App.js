@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import CreateForm from './pages/CreateForm';
 import MyForms from './pages/MyForms';
 import Form from './pages/Form';
+import FormSubmissions from './pages/FormSubmissions';
 
 import { PRIMARY_COLOR, SECONDARY_COLOR } from '../src/constants/Globals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -86,6 +87,7 @@ export default function App() {
           <NavBar />
           <Switch>
             <Route exact path="/form" component={Form} />
+            <Route exact path="/form-submissions" component={FormSubmissions} />
             <PrivateRoute exact path="/my-forms" component={MyForms} />
             <PrivateRoute exact path="/create-form" component={CreateForm} />
             <PrivateRoute exact path="/profile" component={Profile} />

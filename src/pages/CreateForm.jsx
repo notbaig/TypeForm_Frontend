@@ -59,37 +59,37 @@ class CreateForm extends React.Component {
             ],
 
             // LIVE FIELDS
-            // questionnaire: [],
-            // formName: 'My First Form',
-            // formDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-            // formPrivacy: 'PUBLIC',
+            questionnaire: [],
+            formName: 'My First Form',
+            formDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
+            formPrivacy: 'PUBLIC',
 
             // TEST FIELDS
-            questionnaire: [
-                {
-                    type: 'INPUT',
-                    subType: 'SIMPLE',
-                    lablel: 'What is your favouraite color?'
-                },
-                {
-                    type: 'INPUT',
-                    subType: 'MULTILINE',
-                    lablel: 'Write a short bio about yourself.'
-                },
-                {
-                    type: 'RADIO',
-                    lablel: 'Write a short bio about yourself.',
-                    options: [
-                        'Option 1',
-                        'Option 2',
-                        'Option 3',
-                        'Option 4'
-                    ]
-                }
-            ],
-            formName: 'My First Form',
-            formDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',
-            formPrivacy: 'PUBLIC',
+            // questionnaire: [
+            //     {
+            //         type: 'INPUT',
+            //         subType: 'SIMPLE',
+            //         lablel: 'What is your favouraite color?'
+            //     },
+            //     {
+            //         type: 'INPUT',
+            //         subType: 'MULTILINE',
+            //         lablel: 'Write a short bio about yourself.'
+            //     },
+            //     {
+            //         type: 'RADIO',
+            //         lablel: 'Write a short bio about yourself.',
+            //         options: [
+            //             'Option 1',
+            //             'Option 2',
+            //             'Option 3',
+            //             'Option 4'
+            //         ]
+            //     }
+            // ],
+            // formName: 'My First Form',
+            // formDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',
+            // formPrivacy: 'PUBLIC',
         }
     }
 
@@ -143,6 +143,12 @@ class CreateForm extends React.Component {
             questionToBeAddedLabel: '',
             questionnaire: [...questionnaire, question]
         });
+    }//end
+
+    removeQuestion = (question) => {
+        this.setState({
+            questionnaire: this.state.questionnaire.filter(el => el.lablel !== question.lablel)
+        })
     }//end
 
     createForm = async () => {
@@ -305,6 +311,7 @@ class CreateForm extends React.Component {
                                     key={index}
                                     data={question}
                                     lastIndex={questionnaire.length - 1 === index}
+                                    removeQuestion={()=>this.removeQuestion(question)}
                                 />
                             )
                         })}

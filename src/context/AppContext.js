@@ -11,6 +11,16 @@ class AppProvider extends React.Component {
         logout: () => logoutActionReducer(this),
     }//end state
 
+    UNSAFE_componentWillMount(){
+        const user = localStorage.getItem('user');
+        if (user) {
+            this.setState({ isAuth: true, user: JSON.parse(user) });
+        }
+        else {
+            this.setState({ isAuth: false, user: null });
+        }
+    }
+
     componentDidMount() {
         const user = localStorage.getItem('user');
         if (user) {
