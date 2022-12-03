@@ -9,6 +9,7 @@ import SignUp from '../src/pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import CreateForm from './pages/CreateForm';
+import MyForms from './pages/MyForms';
 
 import { PRIMARY_COLOR, SECONDARY_COLOR } from '../src/constants/Globals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -60,6 +61,7 @@ export default function App() {
         <AppProvider>
           <NavBar />
           <Switch>
+            <PrivateRoute exact path="/my-forms" component={MyForms} />
             <PrivateRoute exact path="/create-form" component={CreateForm} />
             <PrivateRoute exact path="/profile" component={Profile} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />

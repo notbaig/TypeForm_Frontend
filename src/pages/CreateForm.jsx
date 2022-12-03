@@ -8,6 +8,7 @@ import {
     Toolbar,
     Typography,
     IconButton,
+    Divider,
     Slide,
     Dialog,
     TextField,
@@ -22,11 +23,19 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import ListIcon from '@mui/icons-material/List';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
+import PublicIcon from '@mui/icons-material/Visibility';
+import PrivateIcon from '@mui/icons-material/VisibilityOff';
 import { Fab, Action } from 'react-tiny-fab';
 import 'react-tiny-fab/dist/styles.css';
 import Question from '../components/Question';
-import { PRIMARY_COLOR, SECONDARY_COLOR } from '../constants/Globals';
+import axios from 'axios';
+import { 
+    IP,
+    PRIMARY_COLOR, 
+    SECONDARY_COLOR 
+} from '../constants/Globals';
 import { AppConsumer } from '../context/AppContext';
+import { withRouter } from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -39,6 +48,23 @@ class CreateForm extends React.Component {
         this.state = {
             loading: false,
             questionModalVisible: false,
+            questionToBeAddedLabel: '',
+            questionToBeAddedType: 'INPUT',
+            questionToBeAddedSubType: 'SIMPLE',
+            questionToBeAddedRadioOptions: [
+                'Option 1',
+                'Option 2',
+                'Option 3',
+                'Option 4'
+            ],
+
+            // LIVE FIELDS
+            // questionnaire: [],
+            // formName: 'My First Form',
+            // formDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
+            // formPrivacy: 'PUBLIC',
+
+            // TEST FIELDS
             questionnaire: [
                 {
                     type: 'INPUT',
@@ -61,16 +87,9 @@ class CreateForm extends React.Component {
                     ]
                 }
             ],
-            // questionnaire: [],
-            questionToBeAddedLabel: '',
-            questionToBeAddedType: 'INPUT',
-            questionToBeAddedSubType: 'SIMPLE',
-            questionToBeAddedRadioOptions: [
-                'Option 1',
-                'Option 2',
-                'Option 3',
-                'Option 4'
-            ],
+            formName: 'My First Form',
+            formDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',
+            formPrivacy: 'PUBLIC',
         }
     }
 
@@ -126,6 +145,45 @@ class CreateForm extends React.Component {
         });
     }//end
 
+    createForm = async () => {
+        const {
+            formName,
+            formDescription,
+            formPrivacy,
+            questionnaire
+        } = this.state;
+        if (formName === '' || formDescription === '' || questionnaire.length <= 0) {
+            return;
+        }
+        this.setState({ loading: true });
+        const link = `${IP}/form/create`;
+        const token = `bearer ${this.context.user.token}`;
+        axios.defaults.headers.common['Authorization'] = token;
+        axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+        const body = {
+            name: formName,
+            description: formDescription,
+            privacy: formPrivacy,
+            questionnaire: questionnaire
+        };
+
+        console.log('T -> ', token);
+        try {
+            const response = await axios.post(link, body);
+            const { data } = response;
+            console.log('res -> ', data);
+            this.setState({ loading: false });
+            alert('Your form has been created!');
+            this.props.history.push('my-forms');
+        }
+        catch (e) {
+            alert(e.response.data);
+            this.setState({ loading: false });
+            console.log('e -> ', e.response.data);
+        }
+    }//end
+
     render() {
         const { loading } = this.state;
         return (
@@ -137,20 +195,32 @@ class CreateForm extends React.Component {
                         alignItems="center"
                         justify="center"
                     >
-                        <Grid item xs={12} >
+                        {loading && <Box sx={{
+                            width: '100%',
+                            marginTop: 2
+                        }}>
+                            <LinearProgress variant="indeterminate" />
+                        </Box>}
+                        <Grid item xs={6} >
                             <h1>Create a New Form</h1>
-                            {loading && <Box sx={{
-                                width: '100%',
-                                marginBottom: 2
-                            }}>
-                                <LinearProgress variant="indeterminate" />
-                            </Box>}
+
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                Form Preview
+                            </Typography>
                             {this.renderFormPreview()}
+                        </Grid>
+                        <Grid item xs={6}
+                            justify="flex-start"
+                            alignItems="flex-start"
+                            style={{
+                                alignSelf: 'flex-start'
+                            }}>
+                            {this.renderFormFields()}
                         </Grid>
                     </Grid>
                     {this.renderFABs()}
                 </div>
-                {this.renderModal()}
+                {this.questionModalVisible()}
             </>
         )//end return
     }//end render
@@ -186,24 +256,46 @@ class CreateForm extends React.Component {
     } //end
 
     renderFormPreview = () => {
-        const { questionnaire } = this.state;
+        const {
+            formName,
+            formDescription,
+            formPrivacy,
+            questionnaire
+        } = this.state;
         return (
             <Card sx={{
-                width: '40%',
+                width: '80%',
                 minHeight: 400,
                 padding: 4,
                 backgroundColor: '#e8eaf6'
             }}>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    Form Preview
+                <Typography variant="h5" component="div">
+                    {formName}
                 </Typography>
 
-                <Typography variant="h5" component="div">
-                    Add Questions
+                <Typography
+                    sx={{ fontSize: 14 }}
+                    color="text.secondary"
+                >
+                    {formDescription}
                 </Typography>
+
+                <div style={{
+                    display: 'flex',
+                    marginBottom: 4,
+                    alignItems: 'center'
+                }}>
+                    <strong><p style={{
+                        marginRight: 4,
+                        color: PRIMARY_COLOR,
+                    }}>Privacy</p></strong>
+                    {formPrivacy === 'PUBLIC' ? <PublicIcon /> : <PrivateIcon />}
+                </div>
+
+                <Divider />
 
                 {questionnaire.length <= 0
-                    ? <Typography variant="body2">
+                    ? <Typography style={{ marginTop: 32 }} variant="body2">
                         When you start adding questions from + button, they will appear here.
                     </Typography>
                     : <>
@@ -218,7 +310,7 @@ class CreateForm extends React.Component {
                         })}
                     </>}
 
-                <Button
+                {questionnaire.length > 0 && <Button
                     disabled={true}
                     type="submit"
                     fullWidth
@@ -228,12 +320,12 @@ class CreateForm extends React.Component {
                     size="large"
                 >
                     Submit
-                </Button>
+                </Button>}
             </Card>
         )
     }//end
 
-    renderModal = () => {
+    questionModalVisible = () => {
         const {
             questionModalVisible,
             questionToBeAddedLabel,
@@ -337,6 +429,73 @@ class CreateForm extends React.Component {
         }
     }//end
 
+    renderFormFields = () => {
+        const {
+            formName,
+            formDescription,
+            formPrivacy
+        } = this.state;
+        return (
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                width: '80%',
+                marginTop: '8%',
+            }}>
+                <TextField
+                    variant="outlined"
+                    label="Name"
+                    placeholder="Name of your form"
+                    fullWidth={true}
+                    style={{ margin: 16 }}
+                    value={formName}
+                    onChange={(e) => this.setState({ formName: e.target.value })}
+                />
+                <TextField
+                    variant="outlined"
+                    label="Description"
+                    placeholder="Description of your form"
+                    fullWidth={true}
+                    style={{ margin: 16 }}
+                    multiline={true}
+                    rows={8}
+                    value={formDescription}
+                    onChange={(e) => this.setState({ formDescription: e.target.value })}
+                />
+
+                <FormControl style={{
+                    marginLeft: 16,
+                    marginRight: 16,
+                    // marginBottom: 16
+                }}>
+                    <FormLabel>Select privacy</FormLabel>
+                    <RadioGroup
+                        value={formPrivacy}
+                        onChange={(e) => this.setState({ formPrivacy: e.target.value })}
+                    >
+                        <FormControlLabel value="PUBLIC" control={<Radio />} label="Public" />
+                        <FormControlLabel value="PRIVATE" control={<Radio />} label="Private" />
+                        {/* <FormControlLabel value="RESTRICTED" control={<Radio />} label="Invite Only" /> */}
+                    </RadioGroup>
+                </FormControl>
+
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    // sx={{ mt: 3, mb: 2 }}
+                    style={{ margin: 16 }}
+                    color="primary"
+                    size="large"
+                    onClick={this.createForm}
+                >
+                    Create Form
+                </Button>
+            </div>
+        )
+    }//end
+
 }//end class
 
-export default CreateForm;
+export default withRouter(CreateForm);

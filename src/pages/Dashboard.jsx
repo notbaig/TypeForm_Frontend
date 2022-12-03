@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { AppConsumer } from '../context/AppContext';
 
-class Home extends React.Component {
+class Dashboard extends React.Component {
     static contextType = AppConsumer;
     constructor(props) {
         super(props);
@@ -90,4 +90,4 @@ class Home extends React.Component {
     }//end render
 }//end class
 
-export default Home;
+export default Dashboard;

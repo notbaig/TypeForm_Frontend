@@ -12,7 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Book';
-import Person from '@mui/icons-material/Person';
+import PersonIcon from '@mui/icons-material/Person';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { withRouter } from 'react-router-dom';
 import { AppConsumer } from '../context/AppContext';
 
@@ -24,10 +25,10 @@ const routes = [
         name: 'Create a new Form',
         path: 'create-form'
     },
-    // {
-    //     name: 'Your Forms',
-    //     path: 'your-forms'
-    // },
+    {
+        name: 'My Forms',
+        path: 'my-forms'
+    },
     // {
     //     name: 'History',
     //     path: 'history'
@@ -160,33 +161,17 @@ class NavBar extends React.Component {
                         </Box>
 
                         <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open settings">
-                                <IconButton onClick={this.handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Mustafa Baig" src="/static/images/avatar/2.jpg" />
+                            <Tooltip title="Profile">
+                                <IconButton onClick={this.handleOpenUserMenu} sx={{ p: 0 }} style={{ marginRight: 16 }}>
+                                    <PersonIcon style={{ color: '#fff' }} />
                                 </IconButton>
                             </Tooltip>
-                            <Menu
-                                sx={{ mt: '45px' }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={this.handleCloseUserMenu}
-                            >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={this.handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
+
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={this.handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <SettingsIcon style={{ color: '#fff' }} />
+                                </IconButton>
+                            </Tooltip>
                         </Box>
                     </Toolbar>
                 </Container>
